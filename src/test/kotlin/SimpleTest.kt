@@ -4,9 +4,9 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 
 class SimpleTest : Spek({
-    describe("a calculator") {
+    describe("a sum") {
 
-        it("should return the result of adding the first number to the second number") {
+        it("should equal 10") {
             val sum = 10
             expect(sum).to.equal(10)
         }
