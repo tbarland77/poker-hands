@@ -1,0 +1,1 @@
+data class Card(val suit: Suit, var value: CardValue)
