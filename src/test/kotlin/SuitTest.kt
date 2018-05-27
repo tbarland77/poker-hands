@@ -5,6 +5,19 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 
 class SuitTest : Spek({
+    describe("get denoted suit") {
+        var validSuit: Int
+        var card = Card(suit = Suit.CLUBS, value = CardValue.TWO)
+        on("a denoted suit of C") {
+            card.suit = Suit.SPADES
+            validSuit = card.suit.getDenoteSuit()
+
+            it("should equal CLUBS") {
+                expect(validSuit).not.to.equal(-1)
+            }
+        }
+    }
+
     describe("get Suit by denoted suit") {
 
         var denotedSuit: Char

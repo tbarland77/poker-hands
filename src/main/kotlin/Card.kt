@@ -1,1 +1,1 @@
-data class Card(val suit: Suit, var value: CardValue)
+data class Card(var suit: Suit, var value: CardValue)

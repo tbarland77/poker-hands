@@ -11,7 +11,7 @@ class CardValueTest : Spek({
         var cardValue: CardValue?
         on("an id of 2") {
             valueId = 2
-            cardValue = CardValue.getCardValueById(2)
+            cardValue = CardValue.getCardValueById(valueId)
 
             it("should equal TWO") {
                 expect(cardValue).to.equal(CardValue.TWO)
