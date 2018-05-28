@@ -5,7 +5,7 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 
 class CardValueTest : Spek({
-    describe("get card value by id") {
+    describe("get card numericValue by id") {
 
         var valueId: Int
         var cardValue: CardValue?

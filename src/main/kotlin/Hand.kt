@@ -22,4 +22,5 @@ class Hand {
         playerHand.sortWith(Comparator { c1: Card?, c2: Card? -> c1?.value!!.compareTo(c2!!.value) })
         return playerHand
     }
+
 }
