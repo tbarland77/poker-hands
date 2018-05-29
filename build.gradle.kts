@@ -48,6 +48,7 @@ dependencies {
     compile(kotlin("stdlib-jdk8", kotlin_version))
     testCompile("com.winterbe:expekt:0.5.0")
     testCompile("org.jetbrains.spek:spek-api:1.1.5")
+    testCompile("com.nhaarman:mockito-kotlin:1.5.0")
     testRuntime("org.jetbrains.spek:spek-junit-platform-engine:1.1.5")
 }
 

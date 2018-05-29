@@ -59,13 +59,8 @@ class RankDecider {
         }
 
         fun hasFlush(cards: Array<Card>): Boolean {
-            val suits = IntArray(5)
-            for (i in cards.indices) {
-                val card = cards[i]
-                suits[i] = card.suit.getDenoteSuit()
-            }
-            val distinctValues = suits.distinct()
-            return distinctValues.size == 1
+            val uniqueSuits = cards.associateBy({ it.suit }, {it.suit.getDenoteSuit()})
+            return uniqueSuits.size == 1
         }
 
         fun hasFullHouse(cards: Array<Card>): Boolean {
@@ -73,14 +68,13 @@ class RankDecider {
         }
 
         fun hasFourOfAKind(cards: Array<Card>): Boolean {
-            val value = IntArray(5)
-            for (i in cards.indices) {
-                val card = cards[i]
-                value[i] = card.value.numericValue
-                value.contains(cards[i].value.numericValue)
+            val cardValuesMap = cards.groupingBy { it.value.numericValue }.eachCount()
+            for (card in cardValuesMap) {
+                if (card.value == 4) {
+                    return true
+                }
             }
-            val distinctValues = value.distinct()
-            return distinctValues.size == 2
+            return false
         }
 
         fun hasStraightFlush(cards: Array<Card>): Boolean {

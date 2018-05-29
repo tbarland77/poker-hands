@@ -248,4 +248,59 @@ class RankDeciderTest  : Spek({
             }
         }
     }
+
+    describe("has a straight flush") {
+        on("a hand with a straight flush") {
+            cards = arrayOf(
+                    Card(Suit.HEARTS, CardValue.NINE),
+                    Card(Suit.HEARTS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.JACK),
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.HEARTS, CardValue.KING)
+            )
+            it("should return true") {
+                expected = true
+                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            }
+        }
+        on("a hand with no straight flush") {
+            cards = arrayOf(
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.SPADES, CardValue.FIVE),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.THREE),
+                    Card(Suit.HEARTS, CardValue.TWO)
+            )
+            it("should return false") {
+                expected = false
+                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            }
+        }
+        on("a hand with only a straight") {
+            cards = arrayOf(
+                    Card(Suit.HEARTS, CardValue.EIGHT),
+                    Card(Suit.SPADES, CardValue.NINE),
+                    Card(Suit.DIAMONDS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.JACK),
+                    Card(Suit.HEARTS, CardValue.QUEEN)
+            )
+            it("should return false") {
+                expected = false
+                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            }
+        }
+        on("a hand with only a flush") {
+            cards = arrayOf(
+                    Card(Suit.HEARTS, CardValue.EIGHT),
+                    Card(Suit.HEARTS, CardValue.ACE),
+                    Card(Suit.HEARTS, CardValue.THREE),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.QUEEN)
+            )
+            it("should return false") {
+                expected = false
+                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            }
+        }
+    }
 })

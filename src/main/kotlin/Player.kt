@@ -1,0 +1,1 @@
+data class Player(var name: String, var hand: Hand, var isWinner: Boolean)
