@@ -1,17 +1,20 @@
 import com.winterbe.expekt.expect
+import io.mockk.every
+import io.mockk.spyk
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 
-//TODO look into mockito or something similar for mocking possibly MockK?
 class GameDeciderTest : Spek({
     describe("Game decider") {
-        var player1: Player()
-        var player2: Player()
-        on("player1 has higher rank") {
-            // set player1 has higher rank here
 
+        val player1 = spyk<Player>()
+        val player2 = spyk<Player>()
+        on("player1 has higher rank") {
+            every { player1.hand?.rank } returns 9
+            every { player2.hand?.rank } returns 7
+            GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player1") {
                 expect(player1.isWinner).to.equal(true)
             }
