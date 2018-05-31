@@ -1,5 +1,4 @@
-class RankDecider {
-    companion object {
+object RankDecider {
         fun hasAPair(cards: Array<Card>): Boolean {
             val value = IntArray(5)
             for (i in cards.indices) {
@@ -81,4 +80,3 @@ class RankDecider {
             return hasFlush(cards) && hasStraight(cards)
         }
     }
-}

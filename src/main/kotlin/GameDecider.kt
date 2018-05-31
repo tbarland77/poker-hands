@@ -1,6 +1,6 @@
 object GameDecider {
 
-    fun compareSameRanks(player1: Player, player2: Player) {
+    private fun compareSameRanks(player1: Player, player2: Player) {
         when {
             player1.hand?.winningCard!!.value.numericValue > player2.hand?.winningCard!!.value.numericValue -> {
                 player1.isWinner = true

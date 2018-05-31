@@ -6,7 +6,6 @@ import org.jetbrains.spek.api.dsl.on
 
 class HandTest : Spek({
     describe("sort cards") {
-
         val playerHand: Array<Card?> =
                 arrayOf(
                         Card(Suit.HEARTS, CardValue.QUEEN),
@@ -17,7 +16,6 @@ class HandTest : Spek({
                 )
         val rank = 9
         val winningCard = playerHand[1]
-
         on("an unsorted player hand") {
             val hand = Hand(playerHand, rank, winningCard)
             hand.sortCards(playerHand)
@@ -26,6 +24,16 @@ class HandTest : Spek({
             }
             it("should be sorted") {
                 expect(playerHand[0]?.value).to.equal(CardValue.TWO)
+            }
+        }
+    }
+    describe("build poker hand") {
+        on("creation of poker hand") {
+            val hand = Hand(pokerHand = arrayOfNulls(5), rank = 0, winningCard = null)
+            it("should be sorted") {
+                for(i in 0..4) {
+                    expect(hand.pokerHand[i]).not.to.equal(null)
+                }
             }
         }
     }
