@@ -15,9 +15,8 @@ class HandTest : Spek({
                         Card(Suit.HEARTS, CardValue.THREE)
                 )
         val rank = 9
-        val winningCard = playerHand[1]
         on("an unsorted player hand") {
-            val hand = Hand(playerHand, rank, winningCard)
+            val hand = Hand(playerHand, rank)
             hand.sortCards(playerHand)
             for (i in 0..4) {
                 println(playerHand[i])
@@ -29,7 +28,7 @@ class HandTest : Spek({
     }
     describe("build poker hand") {
         on("creation of poker hand") {
-            val hand = Hand(pokerHand = arrayOfNulls(5), rank = 0, winningCard = null)
+            val hand = Hand(pokerHand = arrayOfNulls(5), rank = 0)
             it("should be sorted") {
                 for(i in 0..4) {
                     expect(hand.pokerHand[i]).not.to.equal(null)

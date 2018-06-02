@@ -1,1 +1,1 @@
-data class Card(var suit: Suit, var value: CardValue)
+data class Card(var suit: Suit = Suit.CLUBS, var value: CardValue = CardValue.TWO)

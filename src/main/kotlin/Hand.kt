@@ -1,6 +1,6 @@
 import java.util.*
 
-class Hand(var pokerHand: Array<Card?>, var rank: Int = 0, var winningCard: Card?) {
+class Hand(var pokerHand: Array<Card?>, var rank: Int = 0) {
 
     init {
         pokerHand = buildPokerHand()
