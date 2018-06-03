@@ -1,3 +1,4 @@
+
 object GameDecider {
 
     private fun compareSameRanks(player1: Player, player2: Player) {
@@ -6,10 +7,10 @@ object GameDecider {
                 handleHighCardTie(player1, player2)
             }
             player1.hand?.rank == 2 && player2.hand?.rank == 2 -> {
-                // call pair tie
+                handlePairTie(player1, player2)
             }
             player1.hand?.rank == 3 && player2.hand?.rank == 3 -> {
-                // call two pair tie
+                handleTwoPairTie(player1, player2)
             }
             player1.hand?.rank == 4 && player2.hand?.rank == 4 -> {
                 // call three of a kind tie
@@ -41,19 +42,83 @@ object GameDecider {
                 player1.hand?.pokerHand?.get(i)?.value!!.numericValue >
                         player2.hand?.pokerHand?.get(i)?.value!!.numericValue -> {
                     player1.isWinner = true
-                    player1.winningCard = player1.hand!!.pokerHand[i]!!
+                    player1.winningCard = player1.hand!!.pokerHand[i]?.value!!
                     player2.isWinner = false
+                    return
                 }
                 player2.hand?.pokerHand?.get(i)?.value!!.numericValue >
                         player1.hand?.pokerHand?.get(i)?.value!!.numericValue -> {
                     player1.isWinner = false
                     player2.isWinner = true
-                    player2.winningCard = player2.hand!!.pokerHand[i]!!
+                    player2.winningCard = player2.hand!!.pokerHand[i]?.value!!
+                    return
                 }
-                i == player1.hand?.pokerHand!!.lastIndex -> {
-                    player1.isWinner = false
+            }
+        }
+        player1.isWinner = false
+        player2.isWinner = false
+    }
+
+    private fun handlePairTie(player1: Player, player2: Player) {
+        val cardValuesMapPlayer1 = player1.hand?.pokerHand?.groupingBy { it?.value?.numericValue }?.eachCount()
+        val cardValuesMapPlayer2 = player2.hand?.pokerHand?.groupingBy { it?.value?.numericValue }?.eachCount()
+        val pairValuePlayer1 = cardValuesMapPlayer1?.maxBy { it.value }?.key
+        val pairValuePlayer2 = cardValuesMapPlayer2?.maxBy { it.value }?.key
+            when {
+                pairValuePlayer1!! >
+                        pairValuePlayer2!! -> {
+                    player1.isWinner = true
+                    player1.winningCard = CardValue.getCardValueById(pairValuePlayer1)!!
                     player2.isWinner = false
                 }
+                pairValuePlayer1 <
+                        pairValuePlayer2 -> {
+                    player1.isWinner = false
+                    player2.isWinner = true
+                    player2.winningCard = CardValue.getCardValueById(pairValuePlayer2)!!
+                }
+                else -> {
+                    handleHighCardTie(player1, player2)
+            }
+        }
+    }
+
+    private fun handleTwoPairTie(player1: Player, player2: Player) {
+        val cardValuesMapPlayer1 = player1.hand?.pokerHand?.groupingBy { it?.value?.numericValue }?.eachCount()
+        val cardValuesMapPlayer2 = player2.hand?.pokerHand?.groupingBy { it?.value?.numericValue }?.eachCount()
+        val player1Pairs = cardValuesMapPlayer1?.filter { it.value == 2 }
+        val player2Pairs = cardValuesMapPlayer2?.filter { it.value == 2 }
+        val higherPairValuePlayer1 = player1Pairs?.maxBy { it.key!!.toInt() }?.key
+        val higherPairValuePlayer2 = player2Pairs ?.maxBy { it.key!!.toInt()}?.key
+        val lowerPairValuePlayer1 = player1Pairs?.minBy { it.key!!.toInt() }?.key
+        val lowerPairValuePlayer2= player2Pairs ?.minBy { it.key!!.toInt() }?.key
+        when {
+            higherPairValuePlayer1 !! >
+                    higherPairValuePlayer2!! -> {
+                player1.isWinner = true
+                player1.winningCard = CardValue.getCardValueById(higherPairValuePlayer1)!!
+                player2.isWinner = false
+            }
+            higherPairValuePlayer1 <
+                    higherPairValuePlayer2 -> {
+                player1.isWinner = false
+                player2.isWinner = true
+                player2.winningCard = CardValue.getCardValueById(higherPairValuePlayer2)!!
+            }
+            lowerPairValuePlayer1!! >
+                lowerPairValuePlayer2!! -> {
+            player1.isWinner = true
+            player1.winningCard = CardValue.getCardValueById(lowerPairValuePlayer1)!!
+            player2.isWinner = false
+            }
+            lowerPairValuePlayer1 <
+                    lowerPairValuePlayer2 -> {
+                player1.isWinner = false
+                player2.isWinner = true
+                player2.winningCard = CardValue.getCardValueById(lowerPairValuePlayer2)!!
+            }
+            else -> {
+                handleHighCardTie(player1, player2)
             }
         }
     }
