@@ -13,7 +13,7 @@ object GameDecider {
                 handleTwoPairTie(player1, player2)
             }
             player1.hand?.rank == 4 && player2.hand?.rank == 4 -> {
-                // call three of a kind tie
+                handleThreeOfAKindTie(player1, player2)
             }
             player1.hand?.rank == 5 && player2.hand?.rank == 5 -> {
                 // call straight tie
@@ -116,6 +116,30 @@ object GameDecider {
                 player1.isWinner = false
                 player2.isWinner = true
                 player2.winningCard = CardValue.getCardValueById(lowerPairValuePlayer2)!!
+            }
+            else -> {
+                handleHighCardTie(player1, player2)
+            }
+        }
+    }
+
+    private fun handleThreeOfAKindTie(player1: Player, player2: Player) {
+        val cardValuesMapPlayer1 = player1.hand?.pokerHand?.groupingBy { it?.value?.numericValue }?.eachCount()
+        val cardValuesMapPlayer2 = player2.hand?.pokerHand?.groupingBy { it?.value?.numericValue }?.eachCount()
+        val threeOfAKindValuePlayer1 = cardValuesMapPlayer1?.maxBy { it.value }?.key
+        val threeOfAKindValuePlayer2 = cardValuesMapPlayer2?.maxBy { it.value }?.key
+        when {
+            threeOfAKindValuePlayer1!! >
+                    threeOfAKindValuePlayer2!! -> {
+                player1.isWinner = true
+                player1.winningCard = CardValue.getCardValueById(threeOfAKindValuePlayer1)!!
+                player2.isWinner = false
+            }
+            threeOfAKindValuePlayer1 <
+                    threeOfAKindValuePlayer2 -> {
+                player1.isWinner = false
+                player2.isWinner = true
+                player2.winningCard = CardValue.getCardValueById(threeOfAKindValuePlayer2)!!
             }
             else -> {
                 handleHighCardTie(player1, player2)
