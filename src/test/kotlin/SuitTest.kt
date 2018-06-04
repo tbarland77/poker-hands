@@ -5,9 +5,21 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 
 class SuitTest : Spek({
+    var validSuit: Int
+    var card: Card
+    var denotedSuit: Char
+    var fullSuitName: Suit?
+
+    beforeGroup {
+        validSuit = 0
+        card = Card(suit = Suit.CLUBS, value = CardValue.TWO)
+        denotedSuit = 'C'
+        fullSuitName = Suit.HEARTS
+
+    }
+
     describe("get denoted suit") {
-        var validSuit: Int
-        var card = Card(suit = Suit.CLUBS, value = CardValue.TWO)
+        card = Card(suit = Suit.CLUBS, value = CardValue.TWO)
         on("a denoted suit of C") {
             card.suit = Suit.SPADES
             validSuit = card.suit.getDenoteSuit()
@@ -20,8 +32,6 @@ class SuitTest : Spek({
 
     describe("get Suit by denoted suit") {
 
-        var denotedSuit: Char
-        var fullSuitName: Suit?
         on("a denoted suit of C") {
             denotedSuit = 'C'
             fullSuitName = Suit.getSuitByDenoteSuit(denotedSuit)

@@ -6,15 +6,18 @@ import org.jetbrains.spek.api.dsl.on
 
 class HandTest : Spek({
     describe("sort cards") {
-        val playerHand: Array<Card?> =
-                arrayOf(
-                        Card(Suit.HEARTS, CardValue.QUEEN),
-                        Card(Suit.HEARTS, CardValue.FIVE),
-                        Card(Suit.HEARTS, CardValue.KING),
-                        Card(Suit.HEARTS, CardValue.TWO),
-                        Card(Suit.HEARTS, CardValue.THREE)
-                )
-        val rank = 9
+        var playerHand: Array<Card?> = arrayOfNulls(0)
+        val rank = 0
+        beforeEachTest {
+            playerHand = arrayOf(
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.HEARTS, CardValue.FIVE),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.TWO),
+                    Card(Suit.HEARTS, CardValue.THREE)
+            )
+        }
+
         on("an unsorted player hand") {
             val hand = Hand(playerHand, rank)
             hand.sortCards(playerHand)

@@ -8,6 +8,11 @@ class HandRankTest : Spek({
     describe("get hand rank by id") {
         var valueId: Int
         var handRank: HandRank?
+
+        beforeEachTest {
+            valueId = 0
+            handRank = null
+        }
         on("an id of 1") {
             valueId = 1
             handRank = HandRank.getHandRankingById(valueId)

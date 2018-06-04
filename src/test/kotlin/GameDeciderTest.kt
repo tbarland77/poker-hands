@@ -9,6 +9,19 @@ import org.jetbrains.spek.api.dsl.on
 class GameDeciderTest : Spek({
     val player1 = spyk<Player>()
     val player2 = spyk<Player>()
+    var player1Hand : Array<Card?> = arrayOfNulls(0)
+    var player2Hand : Array<Card?> = arrayOfNulls(0)
+    beforeGroup {
+        player1Hand  =  arrayOf(
+                Card(Suit.HEARTS, CardValue.KING),
+                Card(Suit.DIAMONDS, CardValue.QUEEN),
+                Card(Suit.HEARTS, CardValue.JACK),
+                Card(Suit.CLUBS, CardValue.TEN),
+                Card(Suit.HEARTS, CardValue.SEVEN)
+        )
+        player2Hand = player1Hand.clone()
+
+    }
     describe("Game decider compare hands") {
         on("player1 has higher rank") {
             every { player1.hand?.rank } returns 9
@@ -28,16 +41,16 @@ class GameDeciderTest : Spek({
         }
     }
     describe("hand high card tie") {
-        val player1Hand : Array<Card?> =  arrayOf(
+            player1Hand =  arrayOf(
             Card(Suit.HEARTS, CardValue.KING),
             Card(Suit.DIAMONDS, CardValue.QUEEN),
             Card(Suit.HEARTS, CardValue.JACK),
             Card(Suit.CLUBS, CardValue.TEN),
             Card(Suit.HEARTS, CardValue.SEVEN)
         )
-        val player2Hand : Array<Card?> = player1Hand.clone()
-        player2Hand[4] =   Card(Suit.HEARTS, CardValue.FOUR)
+        player2Hand = player1Hand.clone()
         on("player1 has higher high card") {
+            player2Hand[4] =   Card(Suit.HEARTS, CardValue.FOUR)
             every { player1.hand?.rank } returns 1
             every { player1.winningCard } returns CardValue.SEVEN
             every { player2.hand?.rank } returns 1
@@ -76,20 +89,23 @@ class GameDeciderTest : Spek({
         }
     }
     describe("pair card tie") {
-        val player1Hand : Array<Card?> =  arrayOf(
-                Card(Suit.HEARTS, CardValue.KING),
-                Card(Suit.DIAMONDS, CardValue.JACK),
-                Card(Suit.HEARTS, CardValue.JACK),
-                Card(Suit.CLUBS, CardValue.FIVE),
-                Card(Suit.HEARTS, CardValue.THREE)
-        )
-        val player2Hand : Array<Card?> =  arrayOf(
-                Card(Suit.HEARTS, CardValue.QUEEN),
-                Card(Suit.DIAMONDS, CardValue.TEN),
-                Card(Suit.HEARTS, CardValue.TEN),
-                Card(Suit.CLUBS, CardValue.FOUR),
-                Card(Suit.HEARTS, CardValue.THREE)
-        )
+
+        beforeEachTest {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.JACK),
+                    Card(Suit.HEARTS, CardValue.JACK),
+                    Card(Suit.CLUBS, CardValue.FIVE),
+                    Card(Suit.HEARTS, CardValue.THREE)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.DIAMONDS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.TEN),
+                    Card(Suit.CLUBS, CardValue.FOUR),
+                    Card(Suit.HEARTS, CardValue.THREE)
+            )
+        }
         on("player1 has higher pair") {
             every { player1.hand?.rank } returns 2
             every { player1.winningCard } returns CardValue.JACK
@@ -162,20 +178,23 @@ class GameDeciderTest : Spek({
         }
     }
     describe("two pair card tie") {
-        val player1Hand : Array<Card?> =  arrayOf(
-                Card(Suit.HEARTS, CardValue.KING),
-                Card(Suit.DIAMONDS, CardValue.TEN),
-                Card(Suit.HEARTS, CardValue.TEN),
-                Card(Suit.CLUBS, CardValue.NINE),
-                Card(Suit.HEARTS, CardValue.NINE)
-        )
-        val player2Hand : Array<Card?> =  arrayOf(
-                Card(Suit.HEARTS, CardValue.QUEEN),
-                Card(Suit.DIAMONDS, CardValue.SEVEN),
-                Card(Suit.HEARTS, CardValue.SEVEN),
-                Card(Suit.CLUBS, CardValue.FOUR),
-                Card(Suit.HEARTS, CardValue.FOUR)
-        )
+
+        beforeEachTest {
+            player1Hand  =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.TEN),
+                    Card(Suit.CLUBS, CardValue.NINE),
+                    Card(Suit.HEARTS, CardValue.NINE)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.DIAMONDS, CardValue.SEVEN),
+                    Card(Suit.HEARTS, CardValue.SEVEN),
+                    Card(Suit.CLUBS, CardValue.FOUR),
+                    Card(Suit.HEARTS, CardValue.FOUR)
+            )
+        }
         on("player1 has higher first pair") {
             every { player1.hand?.rank } returns 3
             every { player1.winningCard } returns CardValue.TEN
@@ -282,20 +301,23 @@ class GameDeciderTest : Spek({
         }
     }
     describe("three of a kind tie") {
-        val player1Hand : Array<Card?> =  arrayOf(
-                Card(Suit.HEARTS, CardValue.TEN),
-                Card(Suit.DIAMONDS, CardValue.TEN),
-                Card(Suit.HEARTS, CardValue.TEN),
-                Card(Suit.CLUBS, CardValue.SEVEN),
-                Card(Suit.HEARTS, CardValue.SIX)
-        )
-        val player2Hand : Array<Card?> =  arrayOf(
-                Card(Suit.HEARTS, CardValue.NINE),
-                Card(Suit.DIAMONDS, CardValue.NINE),
-                Card(Suit.HEARTS, CardValue.NINE),
-                Card(Suit.CLUBS, CardValue.EIGHT),
-                Card(Suit.HEARTS, CardValue.SEVEN)
-        )
+
+        beforeEachTest {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.TEN),
+                    Card(Suit.DIAMONDS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.TEN),
+                    Card(Suit.CLUBS, CardValue.SEVEN),
+                    Card(Suit.HEARTS, CardValue.SIX)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.NINE),
+                    Card(Suit.DIAMONDS, CardValue.NINE),
+                    Card(Suit.HEARTS, CardValue.NINE),
+                    Card(Suit.CLUBS, CardValue.EIGHT),
+                    Card(Suit.HEARTS, CardValue.SEVEN)
+            )
+        }
         on("player1 has higher three of a kind") {
             every { player1.hand?.rank } returns 4
             every { player2.hand?.rank } returns 4

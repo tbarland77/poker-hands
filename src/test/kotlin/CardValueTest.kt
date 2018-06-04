@@ -9,6 +9,10 @@ class CardValueTest : Spek({
 
         var valueId: Int
         var cardValue: CardValue?
+        beforeEachTest {
+            valueId = 0
+            cardValue = null
+        }
         on("an id of 2") {
             valueId = 2
             cardValue = CardValue.getCardValueById(valueId)

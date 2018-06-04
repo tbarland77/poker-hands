@@ -7,7 +7,19 @@ import org.jetbrains.spek.api.dsl.on
 class RankDeciderTest  : Spek({
     var cards: Array<Card>
     var expected: Boolean
+
+    beforeGroup {
+        cards = arrayOf(
+                Card(Suit.HEARTS, CardValue.QUEEN),
+                Card(Suit.SPADES, CardValue.FIVE),
+                Card(Suit.DIAMONDS, CardValue.KING),
+                Card(Suit.HEARTS, CardValue.TWO),
+                Card(Suit.HEARTS, CardValue.TWO)
+        )
+        expected = false
+    }
     describe("has a pair") {
+
         on("a hand with a pair") {
             cards = arrayOf(
                     Card(Suit.HEARTS, CardValue.QUEEN),
@@ -36,6 +48,7 @@ class RankDeciderTest  : Spek({
         }
     }
     describe("has two pair") {
+
         on("a hand with two pairs") {
             cards = arrayOf(
                     Card(Suit.HEARTS, CardValue.QUEEN),
@@ -65,6 +78,8 @@ class RankDeciderTest  : Spek({
     }
 
     describe("has three of a kind") {
+
+
         on("a hand with three of a kind") {
             cards = arrayOf(
                     Card(Suit.HEARTS, CardValue.QUEEN),
