@@ -9,8 +9,8 @@ import org.jetbrains.spek.api.dsl.on
 class GameDeciderTest : Spek({
     val player1 = spyk<Player>()
     val player2 = spyk<Player>()
-    var player1Hand : Array<Card?> = arrayOfNulls(0)
-    var player2Hand : Array<Card?> = arrayOfNulls(0)
+    var player1Hand : Array<Card> = emptyArray()
+    var player2Hand : Array<Card> = emptyArray()
     beforeGroup {
         player1Hand  =  arrayOf(
                 Card(Suit.HEARTS, CardValue.KING),
@@ -24,16 +24,16 @@ class GameDeciderTest : Spek({
     }
     describe("Game decider compare hands") {
         on("player1 has higher rank") {
-            every { player1.hand?.rank } returns 9
-            every { player2.hand?.rank } returns 7
+            every { player1.hand.rank } returns 9
+            every { player2.hand.rank } returns 7
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player1") {
                 expect(player1.isWinner).to.equal(true)
             }
         }
         on("player2 has higher rank") {
-            every { player1.hand?.rank } returns 1
-            every { player2.hand?.rank } returns 7
+            every { player1.hand.rank } returns 1
+            every { player2.hand.rank } returns 7
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player2") {
                 expect(player2.isWinner).to.equal(true)
@@ -51,11 +51,11 @@ class GameDeciderTest : Spek({
         player2Hand = player1Hand.clone()
         on("player1 has higher high card") {
             player2Hand[4] =   Card(Suit.HEARTS, CardValue.FOUR)
-            every { player1.hand?.rank } returns 1
+            every { player1.hand.rank } returns 1
             every { player1.winningCard } returns CardValue.SEVEN
-            every { player2.hand?.rank } returns 1
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player2.hand.rank } returns 1
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player1") {
                 expect(player1.isWinner).to.equal(true)
@@ -64,11 +64,11 @@ class GameDeciderTest : Spek({
         }
         on("player2 has higher high card") {
             player2Hand[4] =  Card(Suit.HEARTS, CardValue.EIGHT)
-            every { player1.hand?.rank } returns 1
-            every { player2.hand?.rank } returns 1
-            every { player1.hand?.pokerHand } returns player1Hand
+            every { player1.hand.rank } returns 1
+            every { player2.hand.rank } returns 1
+            every { player1.hand.pokerHand } returns player1Hand
             every { player2.winningCard } returns CardValue.EIGHT
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player2") {
                 expect(player2.isWinner).to.equal(true)
@@ -77,10 +77,10 @@ class GameDeciderTest : Spek({
         }
         on("equal hands") {
             player2Hand[4] = player1Hand[4]
-            every { player1.hand?.rank } returns 1
-            every { player2.hand?.rank } returns 1
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 1
+            every { player2.hand.rank } returns 1
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should result in a tie") {
                 expect(player1.isWinner).to.equal(false)
@@ -107,11 +107,11 @@ class GameDeciderTest : Spek({
             )
         }
         on("player1 has higher pair") {
-            every { player1.hand?.rank } returns 2
+            every { player1.hand.rank } returns 2
             every { player1.winningCard } returns CardValue.JACK
-            every { player2.hand?.rank } returns 2
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player2.hand.rank } returns 2
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player1") {
                 expect(player1.isWinner).to.equal(true)
@@ -121,11 +121,11 @@ class GameDeciderTest : Spek({
         on("player2 has higher pair") {
             player2Hand[1] =  Card(Suit.HEARTS, CardValue.KING)
             player2Hand[2] =  Card(Suit.DIAMONDS, CardValue.KING)
-            every { player1.hand?.rank } returns 2
-            every { player2.hand?.rank } returns 2
-            every { player1.hand?.pokerHand } returns player1Hand
+            every { player1.hand.rank } returns 2
+            every { player2.hand.rank } returns 2
+            every { player1.hand.pokerHand } returns player1Hand
             every { player2.winningCard } returns CardValue.KING
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player2") {
                 expect(player2.isWinner).to.equal(true)
@@ -135,10 +135,10 @@ class GameDeciderTest : Spek({
         on("equal pairs with player 1 having a higher side card") {
             player2Hand[1] =  player1Hand[1]
             player2Hand[2] =  player1Hand[2]
-            every { player1.hand?.rank } returns 2
-            every { player2.hand?.rank } returns 2
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 2
+            every { player2.hand.rank } returns 2
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player1.winningCard } returns CardValue.KING
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player1") {
@@ -151,10 +151,10 @@ class GameDeciderTest : Spek({
             player2Hand[0] =  Card(Suit.HEARTS, CardValue.KING)
             player2Hand[1] =  player1Hand[1]
             player2Hand[2] =  player1Hand[2]
-            every { player1.hand?.rank } returns 2
-            every { player2.hand?.rank } returns 2
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 2
+            every { player2.hand.rank } returns 2
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player2.winningCard } returns CardValue.KING
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player2") {
@@ -166,10 +166,10 @@ class GameDeciderTest : Spek({
             for (i in 0..4) {
                 player2Hand[i] = player1Hand[i]
             }
-            every { player1.hand?.rank } returns 2
-            every { player2.hand?.rank } returns 2
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 2
+            every { player2.hand.rank } returns 2
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should result in a tie") {
                 expect(player1.isWinner).to.equal(false)
@@ -196,11 +196,11 @@ class GameDeciderTest : Spek({
             )
         }
         on("player1 has higher first pair") {
-            every { player1.hand?.rank } returns 3
+            every { player1.hand.rank } returns 3
             every { player1.winningCard } returns CardValue.TEN
-            every { player2.hand?.rank } returns 3
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player2.hand.rank } returns 3
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player1") {
                 expect(player1.isWinner).to.equal(true)
@@ -210,11 +210,11 @@ class GameDeciderTest : Spek({
         on("player2 has higher first pair") {
             player2Hand[1] =  Card(Suit.HEARTS, CardValue.KING)
             player2Hand[2] =  Card(Suit.DIAMONDS, CardValue.KING)
-            every { player1.hand?.rank } returns 3
-            every { player2.hand?.rank } returns 3
-            every { player1.hand?.pokerHand } returns player1Hand
+            every { player1.hand.rank } returns 3
+            every { player2.hand.rank } returns 3
+            every { player1.hand.pokerHand } returns player1Hand
             every { player2.winningCard } returns CardValue.KING
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player2") {
                 expect(player2.isWinner).to.equal(true)
@@ -224,10 +224,10 @@ class GameDeciderTest : Spek({
         on("equal first pairs with player 1 having a higher second pair") {
             player2Hand[1] =  player1Hand[1]
             player2Hand[2] =  player1Hand[2]
-            every { player1.hand?.rank } returns 3
-            every { player2.hand?.rank } returns 3
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 3
+            every { player2.hand.rank } returns 3
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player1.winningCard } returns CardValue.NINE
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player1") {
@@ -242,10 +242,10 @@ class GameDeciderTest : Spek({
             player2Hand[4] =  Card(Suit.DIAMONDS, CardValue.FIVE)
             player1Hand[3] =  Card(Suit.HEARTS, CardValue.THREE)
             player1Hand[4] =  Card(Suit.DIAMONDS, CardValue.THREE)
-            every { player1.hand?.rank } returns 3
-            every { player2.hand?.rank } returns 3
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 3
+            every { player2.hand.rank } returns 3
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player2.winningCard } returns CardValue.TEN
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player2") {
@@ -257,10 +257,10 @@ class GameDeciderTest : Spek({
             for (i in 1..4) {
                 player2Hand[i] = player1Hand[i]
             }
-            every { player1.hand?.rank } returns 3
-            every { player2.hand?.rank } returns 3
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 3
+            every { player2.hand.rank } returns 3
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player1.winningCard } returns CardValue.KING
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player1") {
@@ -274,10 +274,10 @@ class GameDeciderTest : Spek({
             }
             player2Hand[0] = Card(Suit.HEARTS, CardValue.KING)
             player1Hand[0] = Card(Suit.HEARTS, CardValue.QUEEN)
-            every { player1.hand?.rank } returns 3
-            every { player2.hand?.rank } returns 3
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 3
+            every { player2.hand.rank } returns 3
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player2.winningCard } returns CardValue.KING
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player2") {
@@ -289,10 +289,10 @@ class GameDeciderTest : Spek({
             for (i in 0..4) {
                 player2Hand[i] = player1Hand[i]
             }
-            every { player1.hand?.rank } returns 3
-            every { player2.hand?.rank } returns 3
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 3
+            every { player2.hand.rank } returns 3
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should result in a tie") {
                 expect(player1.isWinner).to.equal(false)
@@ -319,11 +319,11 @@ class GameDeciderTest : Spek({
             )
         }
         on("player1 has higher three of a kind") {
-            every { player1.hand?.rank } returns 4
-            every { player2.hand?.rank } returns 4
+            every { player1.hand.rank } returns 4
+            every { player2.hand.rank } returns 4
             every { player1.winningCard } returns CardValue.TEN
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player1") {
                 expect(player1.isWinner).to.equal(true)
@@ -334,11 +334,11 @@ class GameDeciderTest : Spek({
             player2Hand[0] =  Card(Suit.HEARTS, CardValue.KING)
             player2Hand[1] =  Card(Suit.HEARTS, CardValue.KING)
             player2Hand[2] =  Card(Suit.DIAMONDS, CardValue.KING)
-            every { player1.hand?.rank } returns 4
-            every { player2.hand?.rank } returns 4
-            every { player1.hand?.pokerHand } returns player1Hand
+            every { player1.hand.rank } returns 4
+            every { player2.hand.rank } returns 4
+            every { player1.hand.pokerHand } returns player1Hand
             every { player2.winningCard } returns CardValue.KING
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner to true for player2") {
                 expect(player2.isWinner).to.equal(true)
@@ -350,10 +350,10 @@ class GameDeciderTest : Spek({
                 player2Hand[i] = player1Hand[i]
             }
             player1Hand[3] = Card(Suit.DIAMONDS, CardValue.NINE)
-            every { player1.hand?.rank } returns 4
-            every { player2.hand?.rank } returns 4
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 4
+            every { player2.hand.rank } returns 4
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player1.winningCard } returns CardValue.NINE
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player1") {
@@ -366,10 +366,10 @@ class GameDeciderTest : Spek({
                 player2Hand[i] = player1Hand[i]
             }
             player2Hand[3] = Card(Suit.DIAMONDS, CardValue.JACK)
-            every { player1.hand?.rank } returns 4
-            every { player2.hand?.rank } returns 4
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 4
+            every { player2.hand.rank } returns 4
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             every { player2.winningCard } returns CardValue.EIGHT
             GameDecider.compareHandRanks(player1, player2)
             it("should set is winner true for player2") {
@@ -381,10 +381,10 @@ class GameDeciderTest : Spek({
             for (i in 0..4) {
                 player2Hand[i] = player1Hand[i]
             }
-            every { player1.hand?.rank } returns 4
-            every { player2.hand?.rank } returns 4
-            every { player1.hand?.pokerHand } returns player1Hand
-            every { player2.hand?.pokerHand } returns player2Hand
+            every { player1.hand.rank } returns 4
+            every { player2.hand.rank } returns 4
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
             GameDecider.compareHandRanks(player1, player2)
             it("should result in a tie") {
                 expect(player1.isWinner).to.equal(false)

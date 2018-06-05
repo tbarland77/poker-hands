@@ -7,9 +7,9 @@ enum class Suit(private val denoteSuit: Char) {
 
     companion object {
         // Gets the suit based on the passed in denoted suit
-        fun getSuitByDenoteSuit(denotedSuit: Char): Suit? {
+        fun getSuitByDenoteSuit(denotedSuit: Char): Suit {
 
-            var cSuit: Suit? = null
+            var cSuit: Suit = CLUBS
 
             when (denotedSuit) {
                 'C' -> cSuit = CLUBS

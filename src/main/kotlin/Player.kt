@@ -1,1 +1,1 @@
-data class Player(var name: String = "", var hand: Hand? = Hand(pokerHand = arrayOfNulls(0), rank = 0), var isWinner: Boolean = false, var winningCard: CardValue = CardValue.TWO)
+data class Player(var name: String = "", var hand: Hand = Hand(pokerHand = emptyArray(), rank = 0), var isWinner: Boolean = false, var winningCard: CardValue = CardValue.TWO)

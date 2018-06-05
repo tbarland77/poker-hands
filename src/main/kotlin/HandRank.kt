@@ -4,9 +4,9 @@ enum class HandRank constructor(val ranking: Int) {
 
     companion object {
 
-        fun getHandRankingById(id: Int): HandRank? {
+        fun getHandRankingById(id: Int): HandRank {
 
-            var handValue: HandRank? = null
+            var handValue: HandRank = HIGHCARD
 
             when (id) {
                 1 -> handValue = HIGHCARD

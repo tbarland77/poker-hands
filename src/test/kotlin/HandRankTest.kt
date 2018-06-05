@@ -7,11 +7,11 @@ import org.jetbrains.spek.api.dsl.on
 class HandRankTest : Spek({
     describe("get hand rank by id") {
         var valueId: Int
-        var handRank: HandRank?
+        var handRank: HandRank
 
         beforeEachTest {
             valueId = 0
-            handRank = null
+            handRank = HandRank.HIGHCARD
         }
         on("an id of 1") {
             valueId = 1
@@ -98,8 +98,8 @@ class HandRankTest : Spek({
             valueId = 99
             handRank = HandRank.getHandRankingById(valueId)
 
-            it("should equal null") {
-                expect(handRank).to.equal(null)
+            it("should equal default value") {
+                expect(handRank).to.equal(HandRank.HIGHCARD)
             }
         }
     }

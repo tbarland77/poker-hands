@@ -6,7 +6,7 @@ import org.jetbrains.spek.api.dsl.on
 
 class HandTest : Spek({
     describe("sort cards") {
-        var playerHand: Array<Card?> = arrayOfNulls(0)
+        lateinit var playerHand: Array<Card>
         val rank = 0
         beforeEachTest {
             playerHand = arrayOf(
@@ -25,14 +25,14 @@ class HandTest : Spek({
                 println(playerHand[i])
             }
             it("should be sorted") {
-                expect(playerHand[0]?.value).to.equal(CardValue.TWO)
+                expect(playerHand[0].value).to.equal(CardValue.TWO)
             }
         }
     }
     describe("build poker hand") {
         on("creation of poker hand") {
-            val hand = Hand(pokerHand = arrayOfNulls(5), rank = 0)
-            it("should be sorted") {
+            val hand = Hand(pokerHand = emptyArray(), rank = 0)
+            it("should not be null") {
                 for(i in 0..4) {
                     expect(hand.pokerHand[i]).not.to.equal(null)
                 }

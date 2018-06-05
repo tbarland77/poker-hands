@@ -4,9 +4,9 @@ enum class CardValue(val numericValue: Int) {
 
     companion object {
         // Determines the card numericValue based on the id that gets passed
-        fun getCardValueById(id: Int): CardValue? {
+        fun getCardValueById(id: Int): CardValue {
 
-            var cValue: CardValue? = null
+            var cValue: CardValue = TWO
 
             when (id) {
                 2 -> cValue = TWO

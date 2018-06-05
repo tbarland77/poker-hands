@@ -8,7 +8,7 @@ class SuitTest : Spek({
     var validSuit: Int
     var card: Card
     var denotedSuit: Char
-    var fullSuitName: Suit?
+    var fullSuitName: Suit
 
     beforeGroup {
         validSuit = 0
@@ -72,8 +72,8 @@ class SuitTest : Spek({
              denotedSuit = 'V'
              fullSuitName = Suit.getSuitByDenoteSuit(denotedSuit)
 
-            it("should equal SPADES") {
-                expect(fullSuitName).to.equal(null)
+            it("should default to CLUBS") {
+                expect(fullSuitName).to.equal(Suit.CLUBS)
             }
         }
     }

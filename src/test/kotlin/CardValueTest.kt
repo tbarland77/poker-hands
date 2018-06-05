@@ -8,10 +8,10 @@ class CardValueTest : Spek({
     describe("get card numericValue by id") {
 
         var valueId: Int
-        var cardValue: CardValue?
+        var cardValue: CardValue
         beforeEachTest {
             valueId = 0
-            cardValue = null
+            cardValue = CardValue.TWO
         }
         on("an id of 2") {
             valueId = 2
@@ -134,8 +134,8 @@ class CardValueTest : Spek({
             valueId = 999
             cardValue = CardValue.getCardValueById(valueId)
 
-            it("should equal null") {
-                expect(cardValue).to.equal(null)
+            it("should equal default value of two") {
+                expect(cardValue).to.equal(CardValue.TWO)
             }
         }
     }
