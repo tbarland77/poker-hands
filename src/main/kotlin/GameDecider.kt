@@ -1,5 +1,19 @@
 
 object GameDecider {
+    //TODO: I need to find a way to handle treating an ace as high or low
+    fun compareHandRanks(player1: Player, player2: Player) {
+        when {
+            player1.hand.rank > player2.hand.rank -> {
+                player1.isWinner = true
+                player2.isWinner = false
+            }
+            player2.hand.rank > player1.hand.rank -> {
+                player2.isWinner = true
+                player1.isWinner = false
+            }
+            player1.hand.rank == player2.hand.rank -> GameDecider.compareSameRanks(player1, player2)
+        }
+    }
 
     private fun compareSameRanks(player1: Player, player2: Player) {
         when {
@@ -16,7 +30,7 @@ object GameDecider {
                 handleThreeOfAKindTie(player1, player2)
             }
             player1.hand.rank == 5 && player2.hand.rank == 5 -> {
-                // call straight tie
+                handleStraightTie(player1, player2)
             }
             player1.hand.rank == 6 && player2.hand.rank == 6 -> {
                 // call flush tie
@@ -147,18 +161,27 @@ object GameDecider {
         }
     }
 
-    fun compareHandRanks(player1: Player, player2: Player) {
+    private fun handleStraightTie(player1: Player, player2: Player) {
         when {
-            player1.hand.rank > player2.hand.rank -> {
-                player1.isWinner = true
-                player2.isWinner = false
-            }
-            player2.hand.rank > player1.hand.rank -> {
+            player1.hand.pokerHand.first().value == CardValue.ACE && player1.hand.pokerHand.last().value == CardValue.TEN && player1.hand.pokerHand.first().value !== CardValue.ACE -> {
+                player1.isWinner = false
                 player2.isWinner = true
+                player1.winningCard = CardValue.getCardValueById(player1.hand.pokerHand.first().value.numericValue)
+            }
+
+            player2.hand.pokerHand.first().value == CardValue.ACE && player2.hand.pokerHand.last().value == CardValue.TEN && player1.hand.pokerHand.first().value !== CardValue.ACE -> {
+                player1.isWinner = false
+                player2.isWinner = true
+                player2.winningCard = CardValue.getCardValueById(player2.hand.pokerHand.first().value.numericValue)
+            }
+
+            player1.hand.pokerHand.first().value == CardValue.ACE && player1.hand.pokerHand.last().value == CardValue.TEN && player2.hand.pokerHand.first().value == CardValue.ACE -> {
+                player2.isWinner = false
                 player1.isWinner = false
             }
-            player1.hand.rank == player2.hand.rank -> GameDecider.compareSameRanks(player1, player2)
+            else -> {
+                handleHighCardTie(player1, player2)
+            }
         }
-
     }
 }
