@@ -1,6 +1,6 @@
 import java.util.*
 
-class Hand(var pokerHand: Array<Card>, var rank: Int = 0) {
+class Hand(var pokerHand: Array<Card> = Array(5) {Card()}, var rank: Int = 0) {
 
     init {
         pokerHand = buildPokerHand()
@@ -8,6 +8,7 @@ class Hand(var pokerHand: Array<Card>, var rank: Int = 0) {
 
     fun sortCards(playerHand: Array<Card>): Array<Card> {
         playerHand.sortWith(Comparator { c1: Card, c2: Card -> c1.value.compareTo(c2.value) })
+        playerHand.reverse()
         return playerHand
     }
 

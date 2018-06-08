@@ -24,8 +24,8 @@ class HandTest : Spek({
             for (i in 0..4) {
                 println(playerHand[i])
             }
-            it("should be sorted") {
-                expect(playerHand[0].value).to.equal(CardValue.TWO)
+            it("should be sorted by highest card value to lowest") {
+                expect(playerHand[0].value).to.equal(CardValue.KING)
             }
         }
     }

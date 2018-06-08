@@ -9,6 +9,8 @@ import org.jetbrains.spek.api.dsl.on
 class GameDeciderTest : Spek({
     val player1 = spyk<Player>()
     val player2 = spyk<Player>()
+    val hand = spyk<Hand>()
+//    val playerHand = spyk<Hand>()
     var player1Hand : Array<Card> = emptyArray()
     var player2Hand : Array<Card> = emptyArray()
     beforeGroup {
