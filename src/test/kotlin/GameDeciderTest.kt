@@ -9,8 +9,6 @@ import org.jetbrains.spek.api.dsl.on
 class GameDeciderTest : Spek({
     val player1 = spyk<Player>()
     val player2 = spyk<Player>()
-    val hand = spyk<Hand>()
-//    val playerHand = spyk<Hand>()
     var player1Hand : Array<Card> = emptyArray()
     var player2Hand : Array<Card> = emptyArray()
     beforeGroup {
@@ -497,6 +495,227 @@ class GameDeciderTest : Spek({
             it("should set player1 is winner to true") {
                 expect(player2.isWinner).to.equal(true)
                 expect(player2.winningCard.numericValue).to.equal(13)
+            }
+        }
+    }
+    describe("full house") {
+        beforeEachTest {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.JACK),
+                    Card(Suit.HEARTS, CardValue.JACK)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.DIAMONDS, CardValue.QUEEN),
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.CLUBS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.TEN)
+            )
+        }
+        on("player1 has higher full house three of a kind") {
+            every { player1.hand.rank } returns 7
+            every { player2.hand.rank } returns 7
+            every { player1.winningCard } returns CardValue.KING
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player1") {
+                expect(player1.isWinner).to.equal(true)
+                expect(player1.winningCard.numericValue).to.equal(13)
+            }
+        }
+        on("player2 has higher full house three of a kind") {
+            every { player1.hand.rank } returns 7
+            every { player2.hand.rank } returns 7
+            every { player2.winningCard } returns CardValue.KING
+            every { player1.hand.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player1Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player2") {
+                expect(player2.isWinner).to.equal(true)
+                expect(player2.winningCard.numericValue).to.equal(13)
+            }
+        }
+        on("player1 has higher full house pair") {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.TEN)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.SEVEN),
+                    Card(Suit.HEARTS, CardValue.SEVEN)
+            )
+            every { player1.hand.rank } returns 7
+            every { player2.hand.rank } returns 7
+            every { player1.winningCard } returns CardValue.TEN
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player1") {
+                expect(player1.isWinner).to.equal(true)
+                expect(player1.winningCard.numericValue).to.equal(10)
+            }
+        }
+        on("player2 has higher full house pair") {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.TEN)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.SEVEN),
+                    Card(Suit.HEARTS, CardValue.SEVEN)
+            )
+            every { player1.hand.rank } returns 7
+            every { player2.hand.rank } returns 7
+            every { player2.winningCard } returns CardValue.TEN
+            every { player1.hand.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player1Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player2") {
+                expect(player2.isWinner).to.equal(true)
+                expect(player2.winningCard.numericValue).to.equal(10)
+            }
+        }
+        on("full house tie with both players having the same hand") {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.TEN),
+                    Card(Suit.HEARTS, CardValue.TEN)
+            )
+            every { player1.hand.rank } returns 7
+            every { player2.hand.rank } returns 7
+            every { player2.winningCard } returns CardValue.TEN
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player1Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to false for both players") {
+                expect(player1.isWinner).to.equal(false)
+                expect(player2.isWinner).to.equal(false)
+            }
+        }
+    }
+
+
+    describe("four of a kind") {
+        beforeEachTest {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.JACK)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.DIAMONDS, CardValue.QUEEN),
+                    Card(Suit.HEARTS, CardValue.QUEEN),
+                    Card(Suit.CLUBS, CardValue.QUEEN),
+                    Card(Suit.HEARTS, CardValue.TEN)
+            )
+        }
+        on("player1 has higher four of a kind") {
+            every { player1.hand.rank } returns 8
+            every { player2.hand.rank } returns 8
+            every { player1.winningCard } returns CardValue.KING
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player1") {
+                expect(player1.isWinner).to.equal(true)
+                expect(player1.winningCard.numericValue).to.equal(13)
+            }
+        }
+        on("player2 has higher four of a kind") {
+            every { player1.hand.rank } returns 8
+            every { player2.hand.rank } returns 8
+            every { player2.winningCard } returns CardValue.KING
+            every { player1.hand.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player1Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player2") {
+                expect(player2.isWinner).to.equal(true)
+                expect(player2.winningCard.numericValue).to.equal(13)
+            }
+        }
+        on("player1 has higher four of a kind side card") {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.TEN)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.SEVEN)
+            )
+            every { player1.hand.rank } returns 8
+            every { player2.hand.rank } returns 8
+            every { player1.winningCard } returns CardValue.TEN
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player2Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player1") {
+                expect(player1.isWinner).to.equal(true)
+                expect(player1.winningCard.numericValue).to.equal(10)
+            }
+        }
+        on("player2 has higher four of a kind side card") {
+            player1Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.TEN)
+            )
+            player2Hand =  arrayOf(
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.DIAMONDS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.KING),
+                    Card(Suit.CLUBS, CardValue.KING),
+                    Card(Suit.HEARTS, CardValue.SEVEN)
+            )
+            every { player1.hand.rank } returns 8
+            every { player2.hand.rank } returns 8
+            every { player2.winningCard } returns CardValue.TEN
+            every { player1.hand.pokerHand } returns player2Hand
+            every { player2.hand.pokerHand } returns player1Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to true for player2") {
+                expect(player2.isWinner).to.equal(true)
+                expect(player2.winningCard.numericValue).to.equal(10)
+            }
+        }
+        on("both players have the same four of a kind hand") {
+            every { player1.hand.rank } returns 8
+            every { player2.hand.rank } returns 8
+            every { player1.winningCard } returns CardValue.TEN
+            every { player1.hand.pokerHand } returns player1Hand
+            every { player2.hand.pokerHand } returns player1Hand
+            GameDecider.compareHandRanks(player1, player2)
+            it("should set is winner to false for both players") {
+                expect(player1.isWinner).to.equal(false)
+                expect(player2.isWinner).to.equal(false)
             }
         }
     }

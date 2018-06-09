@@ -13,6 +13,14 @@ class CardValueTest : Spek({
             valueId = 0
             cardValue = CardValue.TWO
         }
+        on("an id of 1") {
+            valueId = 1
+            cardValue = CardValue.getCardValueById(valueId)
+
+            it("should equal ONE") {
+                expect(cardValue).to.equal(CardValue.ONE)
+            }
+        }
         on("an id of 2") {
             valueId = 2
             cardValue = CardValue.getCardValueById(valueId)

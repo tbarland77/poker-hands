@@ -37,16 +37,16 @@ object GameDecider {
                 handleStraightTie(player1, player2)
             }
             player1.hand.rank == 6 && player2.hand.rank == 6 -> {
-                // call flush tie
+                handleFlushTie(player1, player2)
             }
             player1.hand.rank == 7 && player2.hand.rank == 7 -> {
-                // call full house tie
+                handleFullHouseTie(player1, player2)
             }
             player1.hand.rank == 8 && player2.hand.rank == 8 -> {
-                // call four of a kind tie
+                handleFourOfAKindTie(player1, player2)
             }
             player1.hand.rank == 9 && player2.hand.rank == 9 -> {
-                // call straight flush
+                handleStraightFlushTie(player1, player2)
             }
             else -> {
                 println("This match is a tie!")
@@ -196,5 +196,76 @@ object GameDecider {
                 handleHighCardTie(player1, player2)
             }
         }
+    }
+
+    private fun handleFlushTie(player1: Player, player2: Player) {
+        handleHighCardTie(player1, player2)
+    }
+
+    private fun handleFullHouseTie(player1: Player, player2: Player) {
+        val cardValuesMapPlayer1 = player1.hand.pokerHand.groupingBy { it.value.numericValue }.eachCount()
+        val cardValuesMapPlayer2 = player2.hand.pokerHand.groupingBy { it.value.numericValue }.eachCount()
+        val threeOfAKindValuePlayer1 = cardValuesMapPlayer1.maxBy { it.value }?.key
+        val threeOfAKindValuePlayer2 = cardValuesMapPlayer2.maxBy { it.value }?.key
+        val pairValuePlayer1 = cardValuesMapPlayer1.minBy { it.value }?.key
+        val pairValuePlayer2 = cardValuesMapPlayer2.minBy { it.value }?.key
+        when {
+            threeOfAKindValuePlayer1!! >
+                    threeOfAKindValuePlayer2!! -> {
+                player1.isWinner = true
+                player1.winningCard = CardValue.getCardValueById(threeOfAKindValuePlayer1)
+                player2.isWinner = false
+            }
+            threeOfAKindValuePlayer1 <
+                    threeOfAKindValuePlayer2 -> {
+                player1.isWinner = false
+                player2.isWinner = true
+                player2.winningCard = CardValue.getCardValueById(threeOfAKindValuePlayer2)
+            }
+            pairValuePlayer1!! >
+                    pairValuePlayer2!! -> {
+                player1.isWinner = true
+                player1.winningCard = CardValue.getCardValueById(pairValuePlayer1)
+                player2.isWinner = false
+            }
+            pairValuePlayer1 <
+                    pairValuePlayer2 -> {
+                player2.isWinner = true
+                player2.winningCard = CardValue.getCardValueById(pairValuePlayer2)
+                player1.isWinner = false
+            }
+            else -> {
+                player1.isWinner = false
+                player2.isWinner = false
+            }
+        }
+    }
+
+    private fun handleFourOfAKindTie(player1: Player, player2: Player) {
+        val cardValuesMapPlayer1 = player1.hand.pokerHand.groupingBy { it.value.numericValue }.eachCount()
+        val cardValuesMapPlayer2 = player2.hand.pokerHand.groupingBy { it.value.numericValue }.eachCount()
+        val fourOfAKindValuePlayer1 = cardValuesMapPlayer1.maxBy { it.value }?.key
+        val fourOfAKindValuePlayer2 = cardValuesMapPlayer2.maxBy { it.value }?.key
+        when {
+            fourOfAKindValuePlayer1!! >
+                    fourOfAKindValuePlayer2!! -> {
+                player1.isWinner = true
+                player1.winningCard = CardValue.getCardValueById(fourOfAKindValuePlayer1)
+                player2.isWinner = false
+            }
+            fourOfAKindValuePlayer1 <
+                    fourOfAKindValuePlayer2 -> {
+                player1.isWinner = false
+                player2.isWinner = true
+                player2.winningCard = CardValue.getCardValueById(fourOfAKindValuePlayer2)
+            }
+            else -> {
+                handleHighCardTie(player1, player2)
+            }
+        }
+    }
+
+    private fun handleStraightFlushTie(player1: Player, player2: Player) {
+        handleStraightTie(player1, player2)
     }
 }
