@@ -6,7 +6,7 @@ import org.jetbrains.spek.api.dsl.on
 
 class RankDeciderTest  : Spek({
     var cards: Array<Card>
-    var expected: Boolean
+    var expected: Int
 
     beforeGroup {
         cards = arrayOf(
@@ -16,7 +16,7 @@ class RankDeciderTest  : Spek({
                 Card(Suit.HEARTS, CardValue.TWO),
                 Card(Suit.HEARTS, CardValue.TWO)
         )
-        expected = false
+        expected = 0
     }
     describe("has a pair") {
 
@@ -28,9 +28,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.TWO),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasAPair(cards)).to.equal(expected)
+            it("should return a hand rank of 2") {
+                expected = 2
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand with no pair") {
@@ -41,9 +41,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasAPair(cards)).to.equal(expected)
+            it("should not return 2") {
+                expected = 2
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }
@@ -57,9 +57,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.TWO),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasTwoPair(cards)).to.equal(expected)
+            it("should return rank of 3") {
+                expected = 3
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand with no pairs") {
@@ -70,9 +70,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasTwoPair(cards)).to.equal(expected)
+            it("should not return a rank of 3") {
+                expected = 3
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }
@@ -88,9 +88,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.TWO),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasThreeOfAKind(cards)).to.equal(expected)
+            it("should return a rank of 4") {
+                expected = 4
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand without three of a kind") {
@@ -101,9 +101,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasThreeOfAKind(cards)).to.equal(expected)
+            it("should not return a rank of 4") {
+                expected = 4
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }
@@ -117,9 +117,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.NINE),
                     Card(Suit.HEARTS, CardValue.TEN)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasStraight(cards)).to.equal(expected)
+            it("should return a rank of 5") {
+                expected = 5
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand with no straight") {
@@ -130,9 +130,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasStraight(cards)).to.equal(expected)
+            it("should not return a rank of 5") {
+                expected = 5
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }
@@ -146,9 +146,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.NINE),
                     Card(Suit.HEARTS, CardValue.TEN)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasFlush(cards)).to.equal(expected)
+            it("should return a rank of 6") {
+                expected = 6
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand with no flush") {
@@ -159,9 +159,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasFlush(cards)).to.equal(expected)
+            it("should nor return a rank of 6") {
+                expected = 6
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }
@@ -175,9 +175,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.EIGHT),
                     Card(Suit.HEARTS, CardValue.EIGHT)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasFullHouse(cards)).to.equal(expected)
+            it("should return a rank of 7") {
+                expected = 7
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand with no full house") {
@@ -188,9 +188,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasFlush(cards)).to.equal(expected)
+            it("should not return a hand rank of 7") {
+                expected = 7
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
         on("a hand with only a pair") {
@@ -201,9 +201,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasFlush(cards)).to.equal(expected)
+            it("should not return 7") {
+                expected = 7
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
 
@@ -215,9 +215,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasFlush(cards)).to.equal(expected)
+            it("should not return 7") {
+                expected = 7
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }
@@ -231,9 +231,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.TEN),
                     Card(Suit.HEARTS, CardValue.TEN)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasFourOfAKind(cards)).to.equal(expected)
+            it("should return a rank of 8") {
+                expected = 8
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand with no four of a kind") {
@@ -244,9 +244,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasFourOfAKind(cards)).to.equal(expected)
+            it("should not return a rank of 8") {
+                expected = 8
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
         on("a hand with a full house") {
@@ -257,9 +257,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.KING),
                     Card(Suit.HEARTS, CardValue.QUEEN)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasFourOfAKind(cards)).to.equal(expected)
+            it("should not return a rank of 8") {
+                expected = 8
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }
@@ -273,9 +273,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.QUEEN),
                     Card(Suit.HEARTS, CardValue.KING)
             )
-            it("should return true") {
-                expected = true
-                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            it("should return a rank of 9") {
+                expected = 9
+                expect(RankDecider.determineRank(cards)).to.equal(expected)
             }
         }
         on("a hand with no straight flush") {
@@ -286,9 +286,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.THREE),
                     Card(Suit.HEARTS, CardValue.TWO)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            it("should not return a rank of 9 ") {
+                expected = 9
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
         on("a hand with only a straight") {
@@ -299,9 +299,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.JACK),
                     Card(Suit.HEARTS, CardValue.QUEEN)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            it("should not return a rank of 9") {
+                expected = 9
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
         on("a hand with only a flush") {
@@ -312,9 +312,9 @@ class RankDeciderTest  : Spek({
                     Card(Suit.HEARTS, CardValue.KING),
                     Card(Suit.HEARTS, CardValue.QUEEN)
             )
-            it("should return false") {
-                expected = false
-                expect(RankDecider.hasStraightFlush(cards)).to.equal(expected)
+            it("should not return a rank of 9") {
+                expected = 9
+                expect(RankDecider.determineRank(cards)).to.not.equal(expected)
             }
         }
     }

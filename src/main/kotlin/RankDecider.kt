@@ -1,5 +1,40 @@
 object RankDecider {
-        fun hasAPair(cards: Array<Card>): Boolean {
+
+        fun determineRank(cards: Array<Card>): Int {
+            var rank: Int
+            when {
+                RankDecider.hasStraightFlush(cards) -> {
+                    rank = 9
+                }
+                RankDecider.hasFourOfAKind(cards) -> {
+                    rank = 8
+                }
+                RankDecider.hasFullHouse(cards) -> {
+                    rank = 7
+                }
+                RankDecider.hasFlush(cards) -> {
+                    rank = 6
+                }
+                RankDecider.hasStraight(cards) -> {
+                    rank = 5
+                }
+                RankDecider.hasThreeOfAKind(cards) -> {
+                    rank = 4
+                }
+                RankDecider.hasTwoPair(cards) -> {
+                    rank = 3
+                }
+                RankDecider.hasAPair(cards) -> {
+                    rank = 2
+                }
+                else -> {
+                    rank = 1
+                }
+            }
+            return rank
+        }
+
+        private fun hasAPair(cards: Array<Card>): Boolean {
             val value = IntArray(5)
             for (i in cards.indices) {
                 val card = cards[i]
@@ -9,7 +44,7 @@ object RankDecider {
             return distinctValues.size == 4 || distinctValues.size == 2
         }
 
-        fun hasTwoPair(cards: Array<Card>): Boolean {
+        private fun hasTwoPair(cards: Array<Card>): Boolean {
             val value = IntArray(5)
             for (i in cards.indices) {
                 val card = cards[i]
@@ -19,7 +54,7 @@ object RankDecider {
             return distinctValues.size == 3
         }
 
-        fun hasThreeOfAKind(cards: Array<Card>): Boolean {
+        private fun hasThreeOfAKind(cards: Array<Card>): Boolean {
             val value = IntArray(5)
             var counter = 0
             for (i in cards.indices) {
@@ -42,7 +77,7 @@ object RankDecider {
             return false
         }
 
-        fun hasStraight(cards: Array<Card>): Boolean {
+        private fun hasStraight(cards: Array<Card>): Boolean {
             var id: Int
             var cardValue: Int
             for (i in 0 until cards.size - 1) {
@@ -57,16 +92,16 @@ object RankDecider {
             return true
         }
 
-        fun hasFlush(cards: Array<Card>): Boolean {
+        private fun hasFlush(cards: Array<Card>): Boolean {
             val uniqueSuits = cards.associateBy({ it.suit }, {it.suit.getDenoteSuit()})
             return uniqueSuits.size == 1
         }
 
-        fun hasFullHouse(cards: Array<Card>): Boolean {
+        private fun hasFullHouse(cards: Array<Card>): Boolean {
             return hasAPair(cards) && hasThreeOfAKind(cards)
         }
 
-        fun hasFourOfAKind(cards: Array<Card>): Boolean {
+        private fun hasFourOfAKind(cards: Array<Card>): Boolean {
             val cardValuesMap = cards.groupingBy { it.value.numericValue }.eachCount()
             for (card in cardValuesMap) {
                 if (card.value == 4) {
@@ -76,7 +111,7 @@ object RankDecider {
             return false
         }
 
-        fun hasStraightFlush(cards: Array<Card>): Boolean {
+        private fun hasStraightFlush(cards: Array<Card>): Boolean {
             return hasFlush(cards) && hasStraight(cards)
         }
     }

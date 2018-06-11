@@ -20,7 +20,7 @@ class Hand(var pokerHand: Array<Card> = Array(5) {Card()}, var rank: Int = 0) {
             card.value = CardValue.values().toList().shuffled().first()
             pokerHand[i] = card
         }
-        return pokerHand
+        return this.sortCards(pokerHand)
     }
 
 }
