@@ -17,7 +17,7 @@ class Hand(var pokerHand: Array<Card> = Array(5) {Card()}, var rank: Int = 0) {
         for(i in 0..4) {
             val card = Card(suit = Suit.HEARTS, value = CardValue.TWO)
             card.suit = Suit.values().toList().shuffled().first()
-            card.value = CardValue.values().toList().shuffled().first()
+            card.value = CardValue.values().toList().drop(1).shuffled().first()
             pokerHand[i] = card
         }
         return this.sortCards(pokerHand)
